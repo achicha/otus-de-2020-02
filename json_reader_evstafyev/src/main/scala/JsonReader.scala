@@ -1,10 +1,7 @@
 import org.apache.spark.sql.SparkSession
-import io.circe.generic.auto._
-import io.circe.syntax._
-import cats.syntax.either._
-import io.circe._
-import io.circe.generic.extras.{Configuration, ConfiguredJsonCodec}
-import io.circe.parser._
+import org.json4s.jackson.JsonMethods.{parse}
+import org.json4s.DefaultFormats
+
 
 case class WineMag (id: Option[Int]
                 , country: Option[String]
@@ -12,14 +9,18 @@ case class WineMag (id: Option[Int]
                 , price: Option[Double]
                 , title: Option[String]
                 , variety: Option[String]
-                , winery: Option[String]) {
-    def print(): Unit = {
-        //println(this.getClass.getDeclaredFields.map(_.getName).zip(this.productIterator.to))
-        println(this)
-    }
-}
+                , winery: Option[String])
 
-object JsonReader extends App{
+object JsonReader extends App {
+
+    // data file name
+    var fileName = ""
+    if (args.length == 0) {
+        fileName = "data.json"
+    }
+    else {
+        fileName = args(0)
+    }
 
     // create session
     val spark = SparkSession
@@ -28,15 +29,11 @@ object JsonReader extends App{
       .master("local[*]")
       .getOrCreate();
 
+    implicit val formats = DefaultFormats
 
-
-    // read file
-    val rawDataFile = spark.sparkContext.textFile("winemag-data.json")
-        rawDataFile.foreach(s => {
-            parser.decode[WineMag](s) match {
-                case Right(wineObj) => wineObj.print()
-                case Left(ex) => println(s"some errror: ${ex}, ${s}")
-                //println(parse(s).getOrElse(Json.Null))
-            }
-    })
-    }
+    // read file -> to WineMag class -> print
+    val jsonFile = spark.sparkContext
+      .textFile(fileName)
+      .map(s => parse(s).extract[WineMag])
+      .foreach(println)
+}
