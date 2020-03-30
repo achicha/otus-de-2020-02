@@ -1,4 +1,4 @@
-#### задача:
+#### Task:
 
 Напишите приложение, которое читает [json-файл](https://storage.googleapis.com/otus_sample_data/winemag-data.json.tgz) 
 с помощью Spark RDD API без использования Dataframe/Dataset,
@@ -24,7 +24,7 @@
 
 - create fat jar file: `sbt compile && sbt assembly`
 
-#### Приложение запускается командой:
+#### How to RUN:
 
 1. `git clone git@github.com:achicha/otus-de-2020-02.git`
 2. `cd json_reader_evstafyev`
