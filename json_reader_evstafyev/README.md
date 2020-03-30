@@ -8,4 +8,6 @@
 
 #### Приложение запускается командой:
 
-`/path/to/spark/bin/spark-submit --master local[*] --class com.example.JsonReader /path/to/assembly-jar {path/to/winemag.json}`
+`/path/to/spark/bin/spark-submit --master "local[*]" --class JsonReader /path/to/assembly-jar {path/to/winemag.json}`
+`spark-submit --master "local[*]" --class JsonReader target/scala-2.11/json_reader_evstafyev-assembly-0.2.jar winemag-data.json
+`

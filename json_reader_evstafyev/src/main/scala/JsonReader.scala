@@ -1,6 +1,6 @@
+import io.circe.generic.auto._
+import io.circe.parser
 import org.apache.spark.sql.SparkSession
-import org.json4s.jackson.JsonMethods.{parse}
-import org.json4s.DefaultFormats
 
 
 case class WineMag (id: Option[Int]
@@ -14,13 +14,7 @@ case class WineMag (id: Option[Int]
 object JsonReader extends App {
 
     // data file name
-    var fileName = ""
-    if (args.length == 0) {
-        fileName = "data.json"
-    }
-    else {
-        fileName = args(0)
-    }
+    val fileName = args(0)
 
     // create session
     val spark = SparkSession
@@ -29,11 +23,15 @@ object JsonReader extends App {
       .master("local[*]")
       .getOrCreate();
 
-    implicit val formats = DefaultFormats
 
     // read file -> to WineMag class -> print
     val jsonFile = spark.sparkContext
-      .textFile(fileName)
-      .map(s => parse(s).extract[WineMag])
-      .foreach(println)
+            .textFile(fileName)
+            .foreach(s => {
+                parser.decode[WineMag](s) match {
+                    case Right(wineObj) => println(wineObj)
+                    case Left(ex) => println(s"some errror: ${ex}, ${s}")
+                    //println(parse(s).getOrElse(Json.Null))
+            }
+        })
 }
