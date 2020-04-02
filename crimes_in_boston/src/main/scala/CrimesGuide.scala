@@ -40,7 +40,7 @@ object CrimesGuide extends App {
         .drop("rn")
 
     val df = crimeFacts
-        .join((offenseCodes), $"CODE" === $"OFFENSE_CODE")
+        .join(broadcast(offenseCodes), $"CODE" === $"OFFENSE_CODE")
         // remove crimes without district
         .where("district is not null")
 
