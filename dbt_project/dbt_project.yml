@@ -1,0 +1,22 @@
+
+name: 'crimes_in_boston'
+version: '0.1'
+profile: 'crimes_in_boston'
+source-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+data-paths: ["data"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+    - "target"
+    - "dbt_modules"
+    - "logs"
+
+models:
+  crimes_in_boston:
+      materialized: table
+      staging:
+        materialized: view
+        tags: ["staging", "hourly"]

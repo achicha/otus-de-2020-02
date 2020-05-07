@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_offense_codes
+    columns:
+      - name: offense_code_id
+        description: 'PK'
+        tests:
+          - unique
+          - not_null
+      - name: offense_code_name
+
+  - name: stg_crime
+    columns:
+      - name: incident_number
+        description: "PK = concat(incident_number, offense_code_id)"
+        tests:
+          - not_null
+      - name: offense_code_id
+        tests:
+          - relationships:
+              to: ref("stg_offense_codes")
+              field: offense_code_id
+      - name: district
+        tests:
+          - not_null
+      - name: incident_date
+      - name: year
+      - name: month
+      - name: latitude
+      - name: longitude
+    tests:
+      - unique:
+          column_name: "concat(incident_number, offense_code_id)"

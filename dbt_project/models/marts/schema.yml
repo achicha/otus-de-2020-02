@@ -1,0 +1,51 @@
+version: 2
+
+models:
+
+  # marts
+  - name: fct_crimes
+    description: "all crime incidents"
+    columns:
+      - name: incident_number
+        description: "(PK) crime ID"
+        tests:
+          - not_null
+          - unique
+      - name: incident_date
+        description: "Date when crime was occured"
+      - name: offense_codes
+        description: "array of offense_codes"
+
+  - name: dim_crime_by_district
+    description: 'metrics by every Boston District'
+    columns:
+      - name: district
+        description: "(PK) Boston's district "
+        tests:
+          - unique
+          - not_null
+      - name: crimes_total
+        description: "Total count of crimes by District"
+      - name: crimes_monthly
+        description: "Monthly median of crimes by District"
+      - name: frequent_crime_types
+        description: "Top 3 most frequent crimes by District"
+      - name: latitude
+        description: "latitude of  district"
+      - name: longitude
+        description: "longitude of district"
+
+  # intermediate tables
+  - name: lk_crime_type
+    description: "Lookup table. Crime Types"
+  - name: lk_district_coordinates
+    description: "Lookup table. Coordinates (Long/Lat) of Districts"
+  - name: lk_frequent_crime_types
+    description: "Lookup table. Top 3 most frequent crimes by District"
+  - name: crimes_total_groupped_by_district
+    description: "CTE. Total count of crimes by District"
+  - name: crimes_monthly_median_groupped_by_district
+    description: "CTE. Monthly median of crimes by District"
+  - name: crimes_joined
+    description: "CTE. all joined columns"
+
