@@ -33,8 +33,8 @@
 
 ## Необходимые компоненты системы:
 
-- Google Cloud
 - Composer (managed Airflow)
+- Google Cloud Storage
 - BigQuery 
 - Data Studio
 
