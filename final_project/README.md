@@ -15,7 +15,7 @@
     - закинуть папку с DAGs, как будет готово.
     
 2. Написать DAG для Airflow (python скрипт), который будет содержать последовательность шагов:
-    - скачивать файлы из внешнего источника.
+    - скачивать файлы из [внешнего источника](https://cycling.data.tfl.gov.uk/) 
     - сохранять raw csv data в Google Cloud Storage (GCS)
     - сохраняем из GCS в BigQuery, 
         - используем таблицу. 1) partition by start_date 2) clustered by start_station_id, end_station_id, rental_id
