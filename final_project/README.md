@@ -7,23 +7,23 @@
 ## Декомпозиция задачи.
 
 0. Создать аккаунт в Google Cloud Services. подключить APIs: Composer/ BigQuery / Data Studio 
-1. Настроить планировщик задач ( Airflow ), где будем запускать скрипты по расписанию.
+1. **Настроить планировщик задач** ( Airflow ), где будем запускать скрипты по расписанию.
     - Создать Composer Server
     - установить нужные Python зависимости на сервер 
     - подключить мониторинг. метрики для сервера
     - настроить Pools/settings
     - закинуть папку с DAGs, как будет готово.
     
-2. Написать DAG для Airflow (python скрипт), который будет содержать последовательность шагов:
-    - PythonOperator. скачивать файлы из [внешнего источника](https://cycling.data.tfl.gov.uk/) 
-    - BranchPythonOperator если нет скаченных данных, то пропускаем все следующие шаги, а если есть, то идем далее
-    - GoogleCloudStorageToBigQueryOperator. сохранять raw csv data в Google Cloud Storage (GCS)
-    - BigQueryOperator. merge new data from GCS to BigQuery, 
+2. **Написать DAG для Airflow** (python скрипт), который будет содержать последовательность шагов:
+    - *PythonOperator*. скачивать файлы из [внешнего источника](https://cycling.data.tfl.gov.uk/) 
+    - *BranchPythonOperator* если нет скаченных данных, то пропускаем все следующие шаги, а если есть, то идем далее
+    - *GoogleCloudStorageToBigQueryOperator*. сохранять raw csv data в Google Cloud Storage (GCS)
+    - *BigQueryOperator*. merge new data from GCS to BigQuery, 
         - используем таблицу. 1) partition by start_date 2) clustered by start_station_id, end_station_id, rental_id
         - предварительно очищая данные и исправляя типизацию.
         - используем merge insert, если часть данных уже существует.
     
-3. Создать репорт в Data Studio (BI), для последующего анализа.
+3. **Создать репорт в Data Studio** (BI), для последующего анализа.
     - создать View с нужными агрегатами, чтобы легче было подключать источники в BI. 
     - если будут много использовать view, то можно будет  создать отдельную таблицу, и пересчитывать раз в день, для экономии трафика 
     - подключить источники
